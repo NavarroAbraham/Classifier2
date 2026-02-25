@@ -706,12 +706,13 @@ with tabs[7]:
         )
 
     st.subheader("Intensidad Promedio Global de Píxeles por Dígito")
-    mean_intensities = pd.DataFrame(
-        {str(d): X[y == d].mean(axis=1) for d in range(10)}
+    mean_intensities = pd.concat(
+        [pd.DataFrame({"Dígito": str(d), "Intensidad promedio": X[y == d].mean(axis=1)})
+         for d in range(10)],
+        ignore_index=True,
     )
     fig_box = px.box(
-        mean_intensities.melt(var_name="Dígito", value_name="Intensidad promedio"),
-        x="Dígito", y="Intensidad promedio", color="Dígito",
+        mean_intensities, x="Dígito", y="Intensidad promedio", color="Dígito",
         color_discrete_sequence=PALETTE,
         title="Distribución de intensidad promedio por dígito",
     )
